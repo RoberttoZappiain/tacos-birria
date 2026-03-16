@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: tacos-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tacos_db
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+  tacos-app:
+    build: .
+    container_name: tacos-app
+    environment:
+      # Conexión directa a MySQL dentro de la red de Docker (usa el nombre del contenedor 'mysql-db')
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=tacos_db
+      
+      # Esta URL le indica al backend hacia dónde generar los Códigos QR
+      - PUBLIC_URL=https://tacos-birria.rest
+      - SECRET_KEY=mi_super_secreto_de_produccion_1234
+    volumes:
+      # Esto evita perder las fotos cuando reinicias el servidor
+      - uploads_data:/app/backend/uploads
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Caddy es el responsable del Certificado SSL (candado verde) y el HTTPS
+  caddy:
+    image: caddy:2-alpine
+    container_name: tacos-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"     # HTTP
+      - "443:443"   # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      # Para no tener que volver a pedir el SSL (limite de LetsEncrypt) cada vez que reinicias
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - tacos-app
+
+volumes:
+  mysql_data:
+  uploads_data:
+  caddy_data:
+  caddy_config:

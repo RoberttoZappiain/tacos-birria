@@ -1,0 +1,4 @@
+tacos-birria.rest {
+    # Redirigir el tráfico web normal hacia nuestro contenedor de Node.js en el puerto 5001
+    reverse_proxy tacos-app:5001
+}

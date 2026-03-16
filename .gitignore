@@ -1,0 +1,27 @@
+# Dependencias
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Entornos Virtuales y Variables
+.env
+.env.local
+.env.*.local
+
+# Builds y temporales de Frontend
+frontend/dist/
+frontend/dist-ssr/
+frontend/.eslintcache
+
+# Archivos de subida locales del Backend
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Base de datos local (Volúmenes de Docker)
+mysql_data/
+caddy_data/
+caddy_config/
+
+# Archivos del SO
+.DS_Store
+Thumbs.db
