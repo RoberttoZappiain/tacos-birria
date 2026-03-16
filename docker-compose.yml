@@ -9,6 +9,8 @@ services:
       MYSQL_DATABASE: tacos_db
     volumes:
       - mysql_data:/var/lib/mysql
+      # Script de inicialización de los 12 platillos (se ejecuta la primera vez que arranca)
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s
