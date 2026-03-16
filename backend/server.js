@@ -179,10 +179,10 @@ app.get('/api/qr', verifyToken, async (req, res) => {
     try {
         // Usa PUBLIC_URL si existe (VPS), si no usa la IP local
         const baseUrl = process.env.PUBLIC_URL || `http://${LOCAL_IP}:${PORT || 5001}`;
-        const localMenuUrl = `${baseUrl}/menu`;
+        const targetUrl = baseUrl; // Apuntando al homepage (Landing Page)
         
         // Generar QR con el rojo mexicano de la marca
-        const qrImage = await qrcode.toDataURL(localMenuUrl, {
+        const qrImage = await qrcode.toDataURL(targetUrl, {
             color: {
                 dark: '#b91c1c', // Rojo mexicano (Tailwind red-700)
                 light: '#ffffff'
@@ -191,7 +191,7 @@ app.get('/api/qr', verifyToken, async (req, res) => {
             margin: 2
         });
         
-        res.json({ qr: qrImage, url: localMenuUrl });
+        res.json({ qr: qrImage, url: targetUrl });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
