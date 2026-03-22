@@ -17,7 +17,7 @@ COPY backend/ ./
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
 
 # Exponer el puerto del servidor
-EXPOSE 5001
+EXPOSE 5002
 
 # Comando para iniciar la aplicación
 CMD ["node", "server.js"]

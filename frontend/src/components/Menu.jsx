@@ -6,20 +6,47 @@ import { useNavigate } from 'react-router-dom';
 export default function Menu() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startIndex, setStartIndex] = useState(0);
   const navigate = useNavigate();
+  const ITEMS_PER_PAGE = 16;
 
   useEffect(() => {
-    // Apuntamos al backend local de forma relativa
     axios.get('/api/menu')
       .then(res => {
-        setItems(res.data);
+        setItems(Array.isArray(res.data) ? res.data : []);
         setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setItems([]);
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    if (items.length > ITEMS_PER_PAGE) {
+      const interval = setInterval(() => {
+        setStartIndex(prev => (prev + ITEMS_PER_PAGE) % items.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [items]);
+
+  // Generamos los items para mostrar garantizando que siempre sea un array
+  const finalItems = (() => {
+    if (!items || items.length === 0) return [];
+    
+    // Si tenemos pocos items, simplemente los mostramos todos
+    if (items.length <= ITEMS_PER_PAGE) return items;
+    
+    const displayedItems = items.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    
+    // Si necesitamos rellenar para completar la "rotación" visual
+    if (displayedItems.length < ITEMS_PER_PAGE) {
+        return [...displayedItems, ...items.slice(0, ITEMS_PER_PAGE - displayedItems.length)];
+    }
+    return displayedItems;
+  })();
 
   return (
     <div className="min-h-screen bg-warmBg pb-12">
@@ -44,9 +71,9 @@ export default function Menu() {
             <p className="text-xl">Aún no hay platillos en el menú. Entra a /admin para agregarlos.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {items.map(item => (
-              <div key={item.id} className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-shadow overflow-hidden border border-gray-100">
+          <div className="grid grid-cols-4 gap-8">
+            {finalItems.map((item, index) => (
+              <div key={`${item.id}-${index}`} className="bg-white rounded-3xl shadow-sm hover:shadow-xl transition-shadow overflow-hidden border border-gray-100">
                 <div className="h-56 overflow-hidden bg-gray-100 flex items-center justify-center">
                   <img 
                     src={item.image_url} 

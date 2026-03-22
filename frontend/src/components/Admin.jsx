@@ -43,7 +43,7 @@ export default function Admin() {
   const fetchItems = async () => {
     try {
       const res = await api.get('/menu');
-      setItems(res.data);
+      setItems(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       if(error.response?.status === 401 || error.response?.status === 403) handleLogout();
     }

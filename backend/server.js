@@ -197,7 +197,7 @@ app.get('/api/qr', verifyToken, async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 
 // --- SERVE FRONTEND ---
 // Servir la aplicación React construida directamente desde Node.js
@@ -205,7 +205,7 @@ const frontendPath = path.join(__dirname, '../frontend/dist');
 app.use(express.static(frontendPath));
 
 // Cualquier otra ruta que no sea API la mandamos a React (para que funcione el Router: /menu, /admin)
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
