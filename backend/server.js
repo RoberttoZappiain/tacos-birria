@@ -205,7 +205,7 @@ const frontendPath = path.join(__dirname, '../frontend/dist');
 app.use(express.static(frontendPath));
 
 // Cualquier otra ruta que no sea API la mandamos a React (para que funcione el Router: /menu, /admin)
-app.get('/', (req, res) => {
+app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
 

@@ -4,6 +4,8 @@ services:
   mysql-db:
     image: mysql:8.0
     container_name: tacos-mysql
+    ports:
+      - "3307:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tacos_db
@@ -45,8 +47,8 @@ services:
     container_name: tacos-caddy
     restart: unless-stopped
     ports:
-      - "80:80"     # HTTP
-      - "443:443"   # HTTPS
+      - "8080:80"     # HTTP
+      - "8443:443"   # HTTPS
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       # Para no tener que volver a pedir el SSL (limite de LetsEncrypt) cada vez que reinicias
