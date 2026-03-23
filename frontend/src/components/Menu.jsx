@@ -96,14 +96,18 @@ export default function Menu() {
 
   return (
     <div className="min-h-screen bg-[#f8f5f0] flex flex-col font-sans text-gray-800">
-      <header className="bg-red-800 text-white shadow-lg p-5 flex items-center justify-center border-b-4 border-yellow-500 relative z-50">
+      <header className="bg-red-800 text-white shadow-lg p-3 flex items-center justify-center border-b-4 border-yellow-500 relative z-50">
         <button 
           onClick={() => navigate('/')} 
           className="absolute left-6 p-2 bg-black/20 rounded-full hover:bg-black/40 transition-colors"
         >
           <LeftArrow className="w-6 h-6" />
         </button>
-        <h1 className="text-4xl font-serif font-black tracking-wide uppercase">Tacos de Birria el Chino</h1>
+        <img 
+          src="/logotacoschinohd.jpg" 
+          alt="Tacos de Birria el Chino" 
+          className="h-20 md:h-24 object-contain"
+        />
       </header>
 
       <main className="flex flex-1 overflow-hidden p-6 gap-6 max-w-[1800px] mx-auto w-full">
