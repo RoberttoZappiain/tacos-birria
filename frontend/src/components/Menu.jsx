@@ -33,17 +33,28 @@ export default function Menu() {
   };
 
   useEffect(() => {
-    axios.get('/api/menu')
-      .then(res => {
-        const sortedData = sortItems(Array.isArray(res.data) ? res.data : []);
-        setItems(sortedData);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setItems([]);
-        setLoading(false);
-      });
+    const products = [
+      { id: 'tacobirria43', name: 'Taco de Birria', price: 43, image_url: '/productos/tacobirria43.jpeg' },
+      { id: 'quesabirriademaiz47', name: 'Quesabirria de Maíz', price: 47, image_url: '/productos/quesabirriademaiz47.jpeg' },
+      { id: 'quesabirriaharina90', name: 'Quesabirria de Harina', price: 90, image_url: '/productos/quesabirriaharina90.jpeg' },
+      { id: 'pizzabirria120', name: 'Pizzabirria', price: 120, image_url: '/productos/pizzabirria120.jpeg' },
+      { id: 'birriamen120', name: 'Birriamen', price: 120, image_url: '/productos/birriamen120.jpeg' },
+      { id: 'tortabirria120', name: 'Torta de Birria', price: 120, image_url: '/productos/tortabirria120.jpeg' },
+      { id: 'chichabirria67', name: 'Chichabirria', price: 67, image_url: '/productos/chichabirria67.jpeg' },
+      { id: 'tacobaby43', name: 'Taco Baby', price: 43, image_url: '/productos/tacobaby43.jpeg' },
+      { id: 'costillares220', name: 'Costilla de Res', price: 220, image_url: '/productos/costillares220.jpeg' },
+      { id: 'ordenbirria220', name: 'Orden de Birria', price: 220, image_url: '/productos/ordenbirria220.jpeg' },
+      { id: 'planchada90', name: 'Planchada', price: 90, image_url: '/productos/planchadaHD.png' },
+      { id: 'tacolengua67', name: 'Taco de Lengua', price: 67, image_url: '/productos/tacolengua67.jpg' },
+      { id: 'tacocostilla67', name: 'Taco Costilla', price: 67, image_url: '/productos/tacobirria43.jpeg' },
+      { id: 'tuetano110', name: 'Tuétano en Hueso', price: 110, image_url: '/productos/tuetano110.jpg' },
+      { id: 'agua45', name: 'Agua Fresca litro', price: 45, image_url: '/productos/Agua25mediolitro45litro.png' },
+      { id: 'coca40', name: 'Coca Cola', price: 40, image_url: '/productos/cocacola40.jpg' },
+    ];
+    
+    const sortedData = sortItems(products);
+    setItems(sortedData);
+    setLoading(false);
   }, []);
 
   // Efecto Carrusel Automático
@@ -104,7 +115,7 @@ export default function Menu() {
           <LeftArrow className="w-6 h-6" />
         </button>
         <img 
-          src="/logotacoschinohd.jpg" 
+          src="/logotacoschinohd.png" 
           alt="Tacos de Birria el Chino" 
           className="h-20 md:h-24 object-contain"
         />
